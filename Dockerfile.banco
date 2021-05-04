@@ -1,7 +1,0 @@
-FROM postgres:12
-
-ARG POSTGRES_DB=marketless 
-ARG POSTGRES_USER=postgres 
-ARG POSTGRES_PASSWORD=postgresmarketless
-
-EXPOSE 5432

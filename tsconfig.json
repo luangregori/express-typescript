@@ -8,9 +8,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": "./",
-    "paths": {
-      "test/*": ["test/*"]
-    }
   },
   "include": [ "src/**/*"],
   "exclude" : ["src/**/*.test.ts"]
