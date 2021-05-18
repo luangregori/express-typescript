@@ -21,11 +21,11 @@
 					"password_hash": {
 						"type": "string"
 					},
-					"createdAt": {
+					"created_at": {
 						"type": "string",
 						"format": "date-time"
 					},
-					"updatedAt": {
+					"updated_at": {
 						"type": "string",
 						"format": "date-time"
 					}
@@ -35,8 +35,8 @@
 					"name",
 					"email",
 					"password_hash",
-					"createdAt",
-					"updatedAt"
+					"created_at",
+					"updated_at"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -83,11 +83,11 @@
 						},
 						"type": "array"
 					},
-					"createdAt": {
+					"created_at": {
 						"type": "string",
 						"format": "date-time"
 					},
-					"updatedAt": {
+					"updated_at": {
 						"type": "string",
 						"format": "date-time"
 					}
@@ -97,8 +97,8 @@
 					"name",
 					"url_photo",
 					"products",
-					"createdAt",
-					"updatedAt"
+					"created_at",
+					"updated_at"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -136,11 +136,17 @@
 						},
 						"type": "array"
 					},
-					"createdAt": {
+					"home": {
+						"items": {
+							"$ref": "#/components/schemas/Home"
+						},
+						"type": "array"
+					},
+					"created_at": {
 						"type": "string",
 						"format": "date-time"
 					},
-					"updatedAt": {
+					"updated_at": {
 						"type": "string",
 						"format": "date-time"
 					}
@@ -154,8 +160,43 @@
 					"old_price",
 					"discount",
 					"category",
-					"createdAt",
-					"updatedAt"
+					"home",
+					"created_at",
+					"updated_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Home": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"type_product": {
+						"type": "string"
+					},
+					"product": {
+						"items": {
+							"$ref": "#/components/schemas/Product"
+						},
+						"type": "array"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"type_product",
+					"product",
+					"created_at",
+					"updated_at"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -380,6 +421,26 @@
 						}
 					}
 				]
+			}
+		},
+		"/home/:": {
+			"get": {
+				"operationId": "GetPromo",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Home"
+				],
+				"security": [],
+				"parameters": []
 			}
 		}
 	},

@@ -9,18 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductsInACategory = exports.getCategories = void 0;
+exports.getCategories = void 0;
 const typeorm_1 = require("typeorm");
 const models_1 = require("../models");
 exports.getCategories = () => __awaiter(void 0, void 0, void 0, function* () {
     const repository = typeorm_1.getRepository(models_1.Category);
     return repository.find();
-});
-exports.getProductsInACategory = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const userRepository = typeorm_1.getRepository(models_1.Product);
-    return userRepository
-        .createQueryBuilder("product")
-        .innerJoin("product.category", "category")
-        .where(`category.id = ${id}`)
-        .getMany();
 });

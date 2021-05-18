@@ -40,6 +40,7 @@
     "swagger-ui-express": "^4.1.4",
     "tsoa": "^3.3.0",
     "typeorm": "^0.2.29",
+    "typeorm-naming-strategies": "^2.0.0",
     "yup": "^0.32.9"
   },
   "nodemonConfig": {

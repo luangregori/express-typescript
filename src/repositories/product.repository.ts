@@ -9,3 +9,13 @@ export const getProduct  = async (id: number): Promise<Product | null> => {
   if (!product) return null
   return product
 }
+
+export const getProductsInACategory  = async (id: number): Promise<Array<Product>> => {
+  const userRepository = getRepository(Product);
+
+  return userRepository
+    .createQueryBuilder("product")
+    .innerJoin("product.category", "category")
+    .where(`category.id = ${id}`)
+    .getMany();
+}

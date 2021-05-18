@@ -8,9 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -22,35 +19,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const tsoa_1 = require("tsoa");
-const category_repository_1 = require("../repositories/category.repository");
-const product_repository_1 = require("../repositories/product.repository");
-let CategoryController = class CategoryController {
-    getCategories() {
+const home_repository_1 = require("../repositories/home.repository");
+let HomeController = class HomeController {
+    getPromo() {
         return __awaiter(this, void 0, void 0, function* () {
-            return category_repository_1.getCategories();
+            const promos = yield home_repository_1.getPromos();
+            // pesquisa em uma tabela os ids das promos e os mais vendidos
+            const retun = this.mountResponseBody(promos);
+            return retun;
         });
     }
-    getProductsInACategory(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return product_repository_1.getProductsInACategory(Number(id));
-        });
+    mountResponseBody(home) {
+        function filterAndMap(type) {
+            return home.filter((value) => {
+                return value.type_product === type;
+            })
+                .map((item) => {
+                return item.product;
+            });
+        }
+        let promocoes = filterAndMap('P');
+        let mais_vendidos = filterAndMap('MV');
+        return { promocoes, mais_vendidos };
     }
 };
 __decorate([
-    tsoa_1.Get("/"),
+    tsoa_1.Get("/:"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], CategoryController.prototype, "getCategories", null);
-__decorate([
-    tsoa_1.Get("/:id"),
-    __param(0, tsoa_1.Get()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], CategoryController.prototype, "getProductsInACategory", null);
-CategoryController = __decorate([
-    tsoa_1.Route("category"),
-    tsoa_1.Tags("Category")
-], CategoryController);
-exports.default = CategoryController;
+], HomeController.prototype, "getPromo", null);
+HomeController = __decorate([
+    tsoa_1.Route("home"),
+    tsoa_1.Tags("Home")
+], HomeController);
+exports.default = HomeController;

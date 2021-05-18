@@ -2,6 +2,7 @@ import express from "express";
 import UserRouter from "./user.router";
 import CategoryRouter from "./category.router";
 import ProductRouter from "./product.router";
+import HomeRouter from "./home.router";
 
 import authMiddleware from '../middlewares/auth';
 
@@ -17,5 +18,6 @@ router.use(authMiddleware);
 
 router.use("/category", CategoryRouter)
 router.use("/product", ProductRouter)
+router.use("/home", HomeRouter)
 
 export default router;

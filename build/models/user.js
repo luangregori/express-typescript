@@ -32,11 +32,11 @@ __decorate([
 __decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "createdAt", void 0);
+], User.prototype, "created_at", void 0);
 __decorate([
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "updatedAt", void 0);
+], User.prototype, "updated_at", void 0);
 User = __decorate([
     typeorm_1.Entity()
 ], User);

@@ -1,5 +1,6 @@
 import { Get, Route, Tags,  Post, Body, Path } from "tsoa";
-import { getCategories, getProductsInACategory } from '../repositories/category.repository'
+import { getCategories } from '../repositories/category.repository'
+import { getProductsInACategory } from '../repositories/product.repository'
 import { badRequestError } from '../helpers/httpHelper'
 import { Category, Product } from '../models'
 

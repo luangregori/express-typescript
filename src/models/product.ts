@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn, ManyToOne } from "typeorm";
 import { Category } from './category'
+import { Home } from './home'
 
 @Entity()
 export class Product {
@@ -28,12 +29,15 @@ export class Product {
     @ManyToOne(_type => Category, (category: Category) => category.products)
     category!: Array<Category>
 
+    @OneToMany(_type => Home, (home: Home) => home.product)
+    home!: Array<Home>
+
     // @OneToMany(_type=> Comment, (comment: Comment) => comment.user)
     // comments!: Array<Comment>;
     
     @CreateDateColumn()
-    createdAt!: Date;
+    created_at!: Date;
 
     @UpdateDateColumn()
-    updatedAt!: Date;
+    updated_at!: Date;
 }

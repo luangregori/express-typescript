@@ -8,22 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductsInACategory = exports.getProduct = void 0;
-const typeorm_1 = require("typeorm");
-const models_1 = require("../models");
-exports.getProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const productRepository = typeorm_1.getRepository(models_1.Product);
-    const product = yield productRepository.findOne(id);
-    if (!product)
-        return null;
-    return product;
-});
-exports.getProductsInACategory = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const userRepository = typeorm_1.getRepository(models_1.Product);
-    return userRepository
-        .createQueryBuilder("product")
-        .innerJoin("product.category", "category")
-        .where(`category.id = ${id}`)
-        .getMany();
-});
+const express_1 = __importDefault(require("express"));
+const home_controller_1 = __importDefault(require("../controllers/home.controller"));
+// import authMiddleware from '../middlewares/auth';
+const router = express_1.default.Router();
+const homeController = new home_controller_1.default();
+// router.use(authMiddleware);
+router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield homeController.getPromo();
+    return response.send(res);
+}));
+exports.default = router;

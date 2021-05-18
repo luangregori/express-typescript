@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Product = void 0;
 const typeorm_1 = require("typeorm");
 const category_1 = require("./category");
+const home_1 = require("./home");
 let Product = class Product {
 };
 __decorate([
@@ -47,13 +48,17 @@ __decorate([
     __metadata("design:type", Array)
 ], Product.prototype, "category", void 0);
 __decorate([
+    typeorm_1.OneToMany(_type => home_1.Home, (home) => home.product),
+    __metadata("design:type", Array)
+], Product.prototype, "home", void 0);
+__decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], Product.prototype, "createdAt", void 0);
+], Product.prototype, "created_at", void 0);
 __decorate([
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], Product.prototype, "updatedAt", void 0);
+], Product.prototype, "updated_at", void 0);
 Product = __decorate([
     typeorm_1.Entity()
 ], Product);
