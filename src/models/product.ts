@@ -1,6 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn, ManyToOne } from "typeorm";
+import { 
+    Entity, 
+    PrimaryGeneratedColumn, 
+    Column, 
+    CreateDateColumn, 
+    OneToMany, 
+    UpdateDateColumn, 
+    ManyToOne,
+    ManyToMany,
+    JoinTable
+ } from "typeorm";
 import { Category } from './category'
 import { Home } from './home'
+import { Market } from './market'
+import { Order } from './order'
 
 @Entity()
 export class Product {
@@ -32,8 +44,13 @@ export class Product {
     @OneToMany(_type => Home, (home: Home) => home.product)
     home!: Array<Home>
 
-    // @OneToMany(_type=> Comment, (comment: Comment) => comment.user)
-    // comments!: Array<Comment>;
+    @ManyToMany(() => Market, market => market.products)
+    @JoinTable()
+    markets!: Array<Market>;    
+
+    @ManyToMany(() => Order, order => order.products)
+    @JoinTable()
+    orders!: Array<Order>;
     
     @CreateDateColumn()
     created_at!: Date;

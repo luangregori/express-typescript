@@ -10,7 +10,7 @@ const config = {
     username: process.env.POSTGRES_USER || "postgres",
     password: process.env.POSTGRES_PASSWORD || "postgresmarketless",
     database: process.env.POSTGRES_DB || "marketless",
-    entities: [models_1.User, models_1.Category, models_1.Product, models_1.Home],
+    entities: [models_1.User, models_1.Category, models_1.Product, models_1.Home, models_1.Market, models_1.Order, models_1.State, models_1.City, models_1.Address],
     synchronize: true,
     namingStrategy: new typeorm_naming_strategies_1.SnakeNamingStrategy()
 };

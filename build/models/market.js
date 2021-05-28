@@ -9,46 +9,51 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Market = void 0;
 const typeorm_1 = require("typeorm");
-const address_1 = require("./address");
+const product_1 = require("./product");
 const order_1 = require("./order");
-let User = class User {
+const address_1 = require("./address");
+let Market = class Market {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], User.prototype, "id", void 0);
+], Market.prototype, "id", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "name", void 0);
+], Market.prototype, "name", void 0);
 __decorate([
-    typeorm_1.Column({ unique: true }),
+    typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "email", void 0);
+], Market.prototype, "description", void 0);
 __decorate([
-    typeorm_1.Column({ select: false }),
+    typeorm_1.Column({ nullable: true }),
     __metadata("design:type", String)
-], User.prototype, "password_hash", void 0);
+], Market.prototype, "url_photo", void 0);
 __decorate([
-    typeorm_1.OneToMany(_type => order_1.Order, (order) => order.user),
+    typeorm_1.ManyToMany(() => product_1.Product, product => product.markets),
     __metadata("design:type", Array)
-], User.prototype, "orders", void 0);
+], Market.prototype, "products", void 0);
 __decorate([
-    typeorm_1.OneToOne(() => address_1.Address, address => address.user),
+    typeorm_1.OneToMany(_type => order_1.Order, (order) => order.market),
+    __metadata("design:type", Array)
+], Market.prototype, "orders", void 0);
+__decorate([
+    typeorm_1.OneToOne(() => address_1.Address, address => address.market),
     typeorm_1.JoinColumn(),
     __metadata("design:type", address_1.Address)
-], User.prototype, "address", void 0);
+], Market.prototype, "address", void 0);
 __decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
+], Market.prototype, "created_at", void 0);
 __decorate([
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "updated_at", void 0);
-User = __decorate([
+], Market.prototype, "updated_at", void 0);
+Market = __decorate([
     typeorm_1.Entity()
-], User);
-exports.User = User;
+], Market);
+exports.Market = Market;

@@ -11,22 +11,22 @@ router.get("/", async (_request: Request, response: Response) => {
 
 router.post("/", async (request: Request, response: Response) => {
   return userController.createUser(request.body)
-  .then(res =>{
-    response.send(res);
-  })
-  .catch(err =>{
-    response.status(400).send(err);
-  })
+    .then(res =>{
+      response.send(res);
+    })
+    .catch(err =>{
+      response.status(400).send(err);
+    })
 });
 
 router.post("/login", async (request: Request, response: Response) => {
   return userController.login(request.body)
-  .then(res =>{
-    response.send(res);
-  })
-  .catch(err =>{
-    response.status(400).send(err);
-  })
+    .then(res =>{
+      response.send(res);
+    })
+    .catch(err =>{
+      response.status(400).send(err);
+    })
 });
 
 // router.get("/:id", async (request: Request, response: Response) => {

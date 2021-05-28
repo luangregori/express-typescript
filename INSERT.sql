@@ -44,3 +44,27 @@ INSERT INTO
   ( 14, 'Cereal KELLOGGS 730g', 'Cereal Matinal Sucrilhos KELLOGGS Caixa 730g', 22.29, 'https://firebasestorage.googleapis.com/v0/b/marketless-62365.appspot.com/o/Cereais%2FSucrilhos_KELLOGGS.png?alt=media&token=c2e73e0c-d49a-4331-a68f-9e3a6fabedec'),
   ( 15, 'Cereal Grain Flakes JASMINE 1kg', 'Cereal Matinal Tradicional Grain Flakes JASMINE Pacote 1kg', 24.49, 'https://firebasestorage.googleapis.com/v0/b/marketless-62365.appspot.com/o/Cereais%2FJasmine_GrainFlakes.jpg?alt=media&token=807716d9-6e64-4bdb-b6d2-d40c19d73a2b'),
 
+
+INSERT INTO 
+  product_markets_market 
+  ( product_id,	market_id ) VALUES
+  ( 1, 1),
+  ( 2, 1),
+  ( 3, 1),
+  ( 4, 1),
+  ( 5, 1),
+  ( 6, 1),
+  ( 7, 1),
+  ( 8, 1),
+  ( 9, 1),
+  ( 10, 1),
+  ( 11, 1),
+  ( 12, 1),
+  ( 13, 1),
+  ( 14, 1),
+  ( 15, 1),
+  ( 16, 1),
+  ( 17, 1),
+  ( 18, 1),
+  ( 19, 1),
+  ( 20, 1);

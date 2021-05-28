@@ -7,5 +7,6 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{js,ts}",
-  ]
+  ],
+  modulePathIgnorePatterns: ['build'],
 };

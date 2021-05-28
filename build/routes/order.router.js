@@ -12,24 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const util_1 = require("util");
-const auth_1 = __importDefault(require("../config/auth"));
-const user_repository_1 = require("../repositories/user.repository");
-exports.default = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const authHeader = request.headers.authorization || '';
-    if (!authHeader) {
-        response.status(401).json({ error: 'Token not provided' });
-    }
-    const [, token] = authHeader.split(' ');
-    try {
-        const decoded = yield util_1.promisify(jsonwebtoken_1.default.verify)(token, auth_1.default.secret);
-        const user = yield user_repository_1.getUserbyId(decoded.id);
-        request.body.user = user;
-        return next();
-    }
-    catch (error) {
-        response.status(401).json({ error: 'Token invalid' });
-    }
-    return next();
-});
+const express_1 = __importDefault(require("express"));
+const order_controller_1 = __importDefault(require("../controllers/order.controller"));
+const router = express_1.default.Router();
+const orderController = new order_controller_1.default();
+router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return orderController.createOrder(request.body)
+        .then(res => {
+        response.send(res);
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
+}));
+router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return orderController.getOrders(request.body.user.id)
+        .then(res => {
+        response.send(res);
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
+}));
+exports.default = router;

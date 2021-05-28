@@ -13,6 +13,8 @@ exports.Product = void 0;
 const typeorm_1 = require("typeorm");
 const category_1 = require("./category");
 const home_1 = require("./home");
+const market_1 = require("./market");
+const order_1 = require("./order");
 let Product = class Product {
 };
 __decorate([
@@ -51,6 +53,16 @@ __decorate([
     typeorm_1.OneToMany(_type => home_1.Home, (home) => home.product),
     __metadata("design:type", Array)
 ], Product.prototype, "home", void 0);
+__decorate([
+    typeorm_1.ManyToMany(() => market_1.Market, market => market.products),
+    typeorm_1.JoinTable(),
+    __metadata("design:type", Array)
+], Product.prototype, "markets", void 0);
+__decorate([
+    typeorm_1.ManyToMany(() => order_1.Order, order => order.products),
+    typeorm_1.JoinTable(),
+    __metadata("design:type", Array)
+], Product.prototype, "orders", void 0);
 __decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)

@@ -8,8 +8,13 @@ const productController = new ProductController();
 // router.use(authMiddleware);
 
 router.get("/:id", async (request: Request, response: Response) => {
-  const res = await productController.getProduct(request.params.id);
-  return response.send(res);
+  return productController.getProduct(request.params.id)
+    .then(res =>{
+      response.send(res);
+    })
+    .catch(err =>{
+      response.status(400).send(err);
+    })
 });
 
 export default router

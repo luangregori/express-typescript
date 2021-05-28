@@ -42,77 +42,63 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const tsoa_1 = require("tsoa");
 const Yup = __importStar(require("yup"));
-const user_repository_1 = require("../repositories/user.repository");
-const session_repository_1 = require("../repositories/session.repository");
+const product_repository_1 = require("../repositories/product.repository");
+const market_repository_1 = require("../repositories/market.repository");
+const address_repository_1 = require("../repositories/address.repository");
+const order_repository_1 = require("../repositories/order.repository");
 const httpHelper_1 = require("../helpers/httpHelper");
-let UserController = class UserController {
-    getUsers() {
+let OrderController = class OrderController {
+    getOrders(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return user_repository_1.getUsers();
+            return order_repository_1.getOrderbyUser(id);
         });
     }
-    createUser(body) {
+    createOrder(body) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = Yup.object().shape({
-                name: Yup.string().required(),
-                email: Yup.string().email().required(),
-                password: Yup.string().required().min(6),
+                productsIds: Yup.array().required(),
+                marketId: Yup.number().required(),
+                addressId: Yup.number().required()
             });
             if (!(yield schema.isValid(body))) {
                 return httpHelper_1.badRequestError('Invalid argument');
             }
-            const userExists = yield user_repository_1.getUserbyEmail(body.email);
-            if (userExists) {
-                return httpHelper_1.badRequestError('User already exists');
-            }
-            const { id, name, email } = yield user_repository_1.createUser(body);
-            return session_repository_1.getToken({ id, name, email });
-        });
-    }
-    login(body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const schema = Yup.object().shape({
-                email: Yup.string().email().required(),
-                password: Yup.string().required().min(6),
-            });
-            if (!(yield schema.isValid(body))) {
-                return httpHelper_1.badRequestError('Invalid argument');
-            }
-            const userExists = yield user_repository_1.getUserbyEmail(body.email);
-            if (!userExists) {
-                return httpHelper_1.badRequestError('User not found');
-            }
-            const isValidPassword = yield user_repository_1.checkPassword(body.password, userExists.id);
-            if (!isValidPassword) {
-                return httpHelper_1.badRequestError('Password does not match');
-            }
-            const { id, name, email } = userExists;
-            return session_repository_1.getToken({ id, name, email });
+            const market = yield market_repository_1.getOnlyMarketbyId(body.marketId);
+            const address = yield address_repository_1.getOnlyAddressbyId(body.addressId);
+            let total_value = 0;
+            const products = yield Promise.all(body.productsIds.map((el) => __awaiter(this, void 0, void 0, function* () {
+                const product = yield product_repository_1.getOnlyProductbyId(el);
+                total_value += product.price;
+                return product;
+            })));
+            const newOrder = {
+                products,
+                total_value,
+                market,
+                address,
+                user: body.user,
+                status: 'created'
+            };
+            const order = yield order_repository_1.createOrder(newOrder);
+            return order;
         });
     }
 };
 __decorate([
     tsoa_1.Get("/"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getUsers", null);
+], OrderController.prototype, "getOrders", null);
 __decorate([
     tsoa_1.Post("/"),
     __param(0, tsoa_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "createUser", null);
-__decorate([
-    tsoa_1.Post("/login"),
-    __param(0, tsoa_1.Body()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "login", null);
-UserController = __decorate([
+], OrderController.prototype, "createOrder", null);
+OrderController = __decorate([
     tsoa_1.Route("users"),
     tsoa_1.Tags("User")
-], UserController);
-exports.default = UserController;
+], OrderController);
+exports.default = OrderController;

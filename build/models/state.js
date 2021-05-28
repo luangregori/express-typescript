@@ -9,46 +9,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.State = void 0;
 const typeorm_1 = require("typeorm");
-const address_1 = require("./address");
-const order_1 = require("./order");
-let User = class User {
+const city_1 = require("./city");
+let State = class State {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], User.prototype, "id", void 0);
+], State.prototype, "id", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "name", void 0);
+], State.prototype, "name", void 0);
 __decorate([
-    typeorm_1.Column({ unique: true }),
+    typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "email", void 0);
+], State.prototype, "uf", void 0);
 __decorate([
-    typeorm_1.Column({ select: false }),
-    __metadata("design:type", String)
-], User.prototype, "password_hash", void 0);
-__decorate([
-    typeorm_1.OneToMany(_type => order_1.Order, (order) => order.user),
+    typeorm_1.OneToMany(_type => city_1.City, (city) => city.state),
     __metadata("design:type", Array)
-], User.prototype, "orders", void 0);
-__decorate([
-    typeorm_1.OneToOne(() => address_1.Address, address => address.user),
-    typeorm_1.JoinColumn(),
-    __metadata("design:type", address_1.Address)
-], User.prototype, "address", void 0);
+], State.prototype, "cities", void 0);
 __decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
+], State.prototype, "created_at", void 0);
 __decorate([
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "updated_at", void 0);
-User = __decorate([
+], State.prototype, "updated_at", void 0);
+State = __decorate([
     typeorm_1.Entity()
-], User);
-exports.User = User;
+], State);
+exports.State = State;

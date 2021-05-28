@@ -9,46 +9,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.City = void 0;
 const typeorm_1 = require("typeorm");
 const address_1 = require("./address");
-const order_1 = require("./order");
-let User = class User {
+const state_1 = require("./state");
+let City = class City {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], User.prototype, "id", void 0);
+], City.prototype, "id", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "name", void 0);
+], City.prototype, "name", void 0);
 __decorate([
-    typeorm_1.Column({ unique: true }),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
+    typeorm_1.ManyToOne(_type => state_1.State, (state) => state.cities),
+    __metadata("design:type", state_1.State)
+], City.prototype, "state", void 0);
 __decorate([
-    typeorm_1.Column({ select: false }),
-    __metadata("design:type", String)
-], User.prototype, "password_hash", void 0);
-__decorate([
-    typeorm_1.OneToMany(_type => order_1.Order, (order) => order.user),
+    typeorm_1.OneToMany(_type => address_1.Address, (address) => address.city),
     __metadata("design:type", Array)
-], User.prototype, "orders", void 0);
-__decorate([
-    typeorm_1.OneToOne(() => address_1.Address, address => address.user),
-    typeorm_1.JoinColumn(),
-    __metadata("design:type", address_1.Address)
-], User.prototype, "address", void 0);
+], City.prototype, "adresses", void 0);
 __decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
+], City.prototype, "created_at", void 0);
 __decorate([
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "updated_at", void 0);
-User = __decorate([
+], City.prototype, "updated_at", void 0);
+City = __decorate([
     typeorm_1.Entity()
-], User);
-exports.User = User;
+], City);
+exports.City = City;

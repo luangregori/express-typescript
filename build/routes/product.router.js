@@ -19,7 +19,12 @@ const router = express_1.default.Router();
 const productController = new product_controller_1.default();
 // router.use(authMiddleware);
 router.get("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield productController.getProduct(request.params.id);
-    return response.send(res);
+    return productController.getProduct(request.params.id)
+        .then(res => {
+        response.send(res);
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
 }));
 exports.default = router;

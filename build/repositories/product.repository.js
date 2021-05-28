@@ -9,19 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductsInACategory = exports.getProduct = void 0;
+exports.getProductsInACategory = exports.getOnlyProductbyId = exports.getProduct = void 0;
 const typeorm_1 = require("typeorm");
 const models_1 = require("../models");
 exports.getProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const productRepository = typeorm_1.getRepository(models_1.Product);
-    const product = yield productRepository.findOne(id);
-    if (!product)
-        return null;
-    return product;
+    const repository = typeorm_1.getRepository(models_1.Product);
+    return repository
+        .createQueryBuilder("product")
+        .leftJoinAndSelect("product.markets", "market")
+        .where(`product.id = ${id}`)
+        .getRawOne();
+});
+exports.getOnlyProductbyId = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const repository = typeorm_1.getRepository(models_1.Product);
+    return repository.findOneOrFail(id);
 });
 exports.getProductsInACategory = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const userRepository = typeorm_1.getRepository(models_1.Product);
-    return userRepository
+    const repository = typeorm_1.getRepository(models_1.Product);
+    return repository
         .createQueryBuilder("product")
         .innerJoin("product.category", "category")
         .where(`category.id = ${id}`)

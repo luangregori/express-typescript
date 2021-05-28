@@ -9,46 +9,63 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Address = void 0;
 const typeorm_1 = require("typeorm");
-const address_1 = require("./address");
+const city_1 = require("./city");
+const market_1 = require("./market");
 const order_1 = require("./order");
-let User = class User {
+const user_1 = require("./user");
+let Address = class Address {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], User.prototype, "id", void 0);
+], Address.prototype, "id", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "name", void 0);
+], Address.prototype, "street", void 0);
 __decorate([
-    typeorm_1.Column({ unique: true }),
+    typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "email", void 0);
+], Address.prototype, "number", void 0);
 __decorate([
-    typeorm_1.Column({ select: false }),
+    typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "password_hash", void 0);
+], Address.prototype, "district", void 0);
 __decorate([
-    typeorm_1.OneToMany(_type => order_1.Order, (order) => order.user),
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], Address.prototype, "cep", void 0);
+__decorate([
+    typeorm_1.Column({ nullable: true }),
+    __metadata("design:type", String)
+], Address.prototype, "complement", void 0);
+__decorate([
+    typeorm_1.ManyToOne(_type => city_1.City, (city) => city.adresses),
+    __metadata("design:type", city_1.City)
+], Address.prototype, "city", void 0);
+__decorate([
+    typeorm_1.OneToMany(_type => order_1.Order, (order) => order.address),
     __metadata("design:type", Array)
-], User.prototype, "orders", void 0);
+], Address.prototype, "orders", void 0);
 __decorate([
-    typeorm_1.OneToOne(() => address_1.Address, address => address.user),
-    typeorm_1.JoinColumn(),
-    __metadata("design:type", address_1.Address)
-], User.prototype, "address", void 0);
+    typeorm_1.OneToOne(() => market_1.Market, market => market.address),
+    __metadata("design:type", market_1.Market)
+], Address.prototype, "market", void 0);
+__decorate([
+    typeorm_1.OneToOne(() => user_1.User, user => user.address),
+    __metadata("design:type", market_1.Market)
+], Address.prototype, "user", void 0);
 __decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
+], Address.prototype, "created_at", void 0);
 __decorate([
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "updated_at", void 0);
-User = __decorate([
+], Address.prototype, "updated_at", void 0);
+Address = __decorate([
     typeorm_1.Entity()
-], User);
-exports.User = User;
+], Address);
+exports.Address = Address;

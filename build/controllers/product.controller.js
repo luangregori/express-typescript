@@ -23,10 +23,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const tsoa_1 = require("tsoa");
 const product_repository_1 = require("../repositories/product.repository");
+const httpHelper_1 = require("../helpers/httpHelper");
 let ProductController = class ProductController {
     getProduct(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return product_repository_1.getProduct(Number(id));
+            const products = yield product_repository_1.getProduct(Number(id));
+            if (products) {
+                return products;
+            }
+            return httpHelper_1.badRequestError('invalid product');
         });
     }
 };

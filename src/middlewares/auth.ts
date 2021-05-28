@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from "express";
 import { promisify } from 'util';
 import authConfig from '../config/auth';
+import { getUserbyId } from '../repositories/user.repository';
 
 export default async (request: Request, response: Response, next: NextFunction) => {
   const authHeader = request.headers.authorization || '';
@@ -15,7 +16,9 @@ export default async (request: Request, response: Response, next: NextFunction) 
   try {
     const decoded: any = await promisify(jwt.verify)(token, authConfig.secret);
     
-    request.params.userId = decoded.id;
+    const user = await getUserbyId(decoded.id);
+
+    request.body.user = user;
     
     return next();
   } catch (error) {

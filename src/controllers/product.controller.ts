@@ -8,6 +8,10 @@ import { Product } from '../models'
 export default class ProductController {
   @Get("/:id")
   public async getProduct(@Get() id: string): Promise<Product | null> {
-    return getProduct(Number(id))
+    const products = await getProduct(Number(id))
+    if (products){
+      return products
+    }
+    return badRequestError('invalid product')
   }
 }

@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn, OneToOne, JoinColumn} from "typeorm";
+import { Address } from "./address";
+import { Order } from "./order";
 
 @Entity()
 export class User {
@@ -12,14 +14,15 @@ export class User {
     @Column({ unique: true })
     email!: string;
 
-    @Column()
+    @Column({select: false})
     password_hash!: string;
 
-    // @OneToMany(_type => Post, (post: Post) => post.user)
-    // posts!: Array<Post>
+    @OneToMany(_type => Order, (order: Order) => order.user)
+    orders!: Array<Order>
 
-    // @OneToMany(_type=> Comment, (comment: Comment) => comment.user)
-    // comments!: Array<Comment>;
+    @OneToOne(() => Address, address => address.user)
+    @JoinColumn()
+    address!: Address;
     
     @CreateDateColumn()
     created_at!: Date;
