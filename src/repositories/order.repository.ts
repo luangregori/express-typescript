@@ -15,6 +15,7 @@ export const getOrderbyUser  = async (userId: number): Promise<Array<Order>> => 
     .leftJoinAndSelect("order.user", "user")
     .leftJoinAndSelect("order.market", "market")
     .leftJoinAndSelect("order.address", "address")
+    .leftJoinAndSelect("order.products", "product")
     .where(`user.id = ${userId}`)
     .getMany();
   return orders

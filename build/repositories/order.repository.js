@@ -26,6 +26,7 @@ exports.getOrderbyUser = (userId) => __awaiter(void 0, void 0, void 0, function*
         .leftJoinAndSelect("order.user", "user")
         .leftJoinAndSelect("order.market", "market")
         .leftJoinAndSelect("order.address", "address")
+        .leftJoinAndSelect("order.products", "product")
         .where(`user.id = ${userId}`)
         .getMany();
     return orders;
