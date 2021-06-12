@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
+const _1 = require(".");
 const address_1 = require("./address");
 const order_1 = require("./order");
 let User = class User {
@@ -39,7 +40,20 @@ __decorate([
     typeorm_1.OneToOne(() => address_1.Address, address => address.user),
     typeorm_1.JoinColumn(),
     __metadata("design:type", address_1.Address)
+], User.prototype, "default_address", void 0);
+__decorate([
+    typeorm_1.OneToMany(_type => address_1.Address, (address) => address.user),
+    __metadata("design:type", Array)
 ], User.prototype, "address", void 0);
+__decorate([
+    typeorm_1.OneToOne(() => _1.Card, card => card.user),
+    typeorm_1.JoinColumn(),
+    __metadata("design:type", _1.Card)
+], User.prototype, "default_card", void 0);
+__decorate([
+    typeorm_1.OneToMany(_type => _1.Card, (card) => card.user),
+    __metadata("design:type", Array)
+], User.prototype, "card", void 0);
 __decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)

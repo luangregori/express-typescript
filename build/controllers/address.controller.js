@@ -42,64 +42,91 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const tsoa_1 = require("tsoa");
 const Yup = __importStar(require("yup"));
-const product_repository_1 = require("../repositories/product.repository");
-const market_repository_1 = require("../repositories/market.repository");
+const models_1 = require("../models");
 const address_repository_1 = require("../repositories/address.repository");
-const order_repository_1 = require("../repositories/order.repository");
+const city_repository_1 = require("../repositories/city.repository");
+const user_repository_1 = require("../repositories/user.repository");
 const httpHelper_1 = require("../helpers/httpHelper");
-let OrderController = class OrderController {
-    getOrders(id) {
+let AddressController = class AddressController {
+    getAddress(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            return order_repository_1.getOrderbyUser(id);
+            const allAddress = yield address_repository_1.getAddressbyUser(user.id);
+            let default_address = user.default_address ? user.default_address.id : 0;
+            allAddress.map((el, idx) => {
+                if (el.id === default_address) {
+                    allAddress.splice(idx, 1);
+                }
+            });
+            let merged = {
+                default: user.default_address,
+                all: allAddress
+            };
+            return merged;
         });
     }
-    createOrder(body) {
+    getAllCities() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return city_repository_1.getAllCities();
+        });
+    }
+    createAddress(body) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = Yup.object().shape({
-                productsIds: Yup.array().required(),
-                marketId: Yup.number().required(),
-                addressId: Yup.number().required()
+                street: Yup.string().required(),
+                number: Yup.string().required(),
+                district: Yup.string().required(),
+                cep: Yup.string().required(),
+                complement: Yup.string(),
+                city_id: Yup.number()
             });
             if (!(yield schema.isValid(body))) {
                 return httpHelper_1.badRequestError('Invalid argument');
             }
-            const market = yield market_repository_1.getOnlyMarketbyId(body.marketId);
-            const address = yield address_repository_1.getOnlyAddressbyId(body.addressId);
-            let total_value = 0;
-            const products = yield Promise.all(body.productsIds.map((el) => __awaiter(this, void 0, void 0, function* () {
-                const product = yield product_repository_1.getOnlyProductbyId(el);
-                const productPrice = yield product_repository_1.getOnlyPriceByMarket(el, body.marketId);
-                total_value += productPrice;
-                return product;
-            })));
-            const newOrder = {
-                products,
-                total_value,
-                market,
-                address,
-                user: body.user,
-                status: 'created'
-            };
-            const order = yield order_repository_1.createOrder(newOrder);
-            return order;
+            const city = yield city_repository_1.getOnlyCitybyId(body.city_id);
+            body.city = city;
+            const address = yield address_repository_1.createAddress(body);
+            if (body.default) {
+                yield user_repository_1.updateAddress(body.user.id, address);
+            }
+            return address;
+        });
+    }
+    deleteAddress(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (body.user.default_address.id === body.addressId) {
+                yield user_repository_1.updateAddress(body.user.id);
+            }
+            return address_repository_1.deleteAddress(body.addressId);
         });
     }
 };
 __decorate([
     tsoa_1.Get("/:id"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [models_1.User]),
     __metadata("design:returntype", Promise)
-], OrderController.prototype, "getOrders", null);
+], AddressController.prototype, "getAddress", null);
+__decorate([
+    tsoa_1.Get("/cities"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AddressController.prototype, "getAllCities", null);
 __decorate([
     tsoa_1.Post("/"),
     __param(0, tsoa_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], OrderController.prototype, "createOrder", null);
-OrderController = __decorate([
-    tsoa_1.Route("order"),
-    tsoa_1.Tags("Order")
-], OrderController);
-exports.default = OrderController;
+], AddressController.prototype, "createAddress", null);
+__decorate([
+    tsoa_1.Delete('/'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AddressController.prototype, "deleteAddress", null);
+AddressController = __decorate([
+    tsoa_1.Route("address"),
+    tsoa_1.Tags("Address")
+], AddressController);
+exports.default = AddressController;

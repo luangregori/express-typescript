@@ -1,19 +1,18 @@
 import { Get, Route, Tags,  Post, Body, Path } from "tsoa";
 import * as Yup from 'yup';
 import { Product, Order } from '../models'
-import { getOnlyProductbyId } from '../repositories/product.repository';
+import { getOnlyProductbyId, getOnlyPriceByMarket } from '../repositories/product.repository';
 import { getOnlyMarketbyId } from '../repositories/market.repository';
 import { getOnlyAddressbyId } from '../repositories/address.repository';
 import { createOrder, getOrderbyUser } from '../repositories/order.repository';
 import { badRequestError } from '../helpers/httpHelper'
 import { IOrderPayload } from '../interface/order.interface';
 
-
-@Route("users")
-@Tags("User")
+@Route("order")
+@Tags("Order")
 export default class OrderController {
 
-  @Get("/")
+  @Get("/:id")
   public async getOrders(id: number): Promise<Array<Order>> {
     return getOrderbyUser(id)
   }
@@ -37,7 +36,8 @@ export default class OrderController {
     const products: Array<Product> = await Promise.all(
       body.productsIds.map(async el =>{
         const product = await getOnlyProductbyId(el);
-        total_value += product.price
+        const productPrice = await getOnlyPriceByMarket(el, body.marketId);
+        total_value += productPrice
         return product
       })
     )

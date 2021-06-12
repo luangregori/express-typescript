@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkPassword = exports.getPasswordHash = exports.getUserbyEmail = exports.getUserbyId = exports.createUser = exports.getUsers = void 0;
+exports.updateCard = exports.updateAddress = exports.checkPassword = exports.getPasswordHash = exports.getUserbyEmail = exports.getUserbyId = exports.createUser = exports.getUsers = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const typeorm_1 = require("typeorm");
 const models_1 = require("../models");
@@ -28,7 +28,13 @@ exports.createUser = (payload) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getUserbyId = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const userRepository = typeorm_1.getRepository(models_1.User);
-    const user = yield userRepository.findOne(id);
+    const user = yield userRepository
+        .createQueryBuilder("user")
+        .leftJoinAndSelect("user.default_address", "address")
+        .leftJoinAndSelect("user.default_card", "card")
+        .where(`user.id = ${id}`)
+        .getOne();
+    // const user = await userRepository.findOne(id)
     if (!user)
         return null;
     return user;
@@ -51,4 +57,22 @@ exports.checkPassword = (password, id) => __awaiter(void 0, void 0, void 0, func
         .where(`user.id = ${id}`)
         .getRawOne();
     return yield bcryptjs_1.default.compare(password, user.password_hash);
+});
+exports.updateAddress = (userId, address) => __awaiter(void 0, void 0, void 0, function* () {
+    const repository = typeorm_1.getRepository(models_1.User);
+    yield repository
+        .createQueryBuilder()
+        .update(models_1.User)
+        .set({ default_address: address })
+        .where(`id = ${userId}`)
+        .execute();
+});
+exports.updateCard = (userId, card) => __awaiter(void 0, void 0, void 0, function* () {
+    const repository = typeorm_1.getRepository(models_1.User);
+    yield repository
+        .createQueryBuilder()
+        .update(models_1.User)
+        .set({ default_card: card })
+        .where(`id = ${userId}`)
+        .execute();
 });

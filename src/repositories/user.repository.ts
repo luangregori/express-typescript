@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { getRepository } from "typeorm";
-import { User, Product } from '../models';
+import { User, Product, Address, Card } from '../models';
 import { IUserPayload } from '../interface/user.interface';
 
 export const getUsers  = async () :Promise<Array<User>> => {
@@ -22,7 +22,13 @@ export const createUser  = async (payload: IUserPayload) :Promise<User> => {
 
 export const getUserbyId  = async (id: number): Promise<User | null> => {
   const userRepository = getRepository(User);
-  const user = await userRepository.findOne(id)
+  const user = await userRepository
+    .createQueryBuilder("user")
+    .leftJoinAndSelect("user.default_address", "address") 
+    .leftJoinAndSelect("user.default_card", "card") 
+    .where(`user.id = ${id}`)
+    .getOne();
+  // const user = await userRepository.findOne(id)
   if (!user) return null
   return user
 }
@@ -46,4 +52,24 @@ export const checkPassword = async (password: string, id: number): Promise<boole
     .where(`user.id = ${id}`)
     .getRawOne();
   return await bcrypt.compare(password, user.password_hash);
+}
+
+export const updateAddress = async(userId: number, address?: Address): Promise<void> => {
+  const repository = getRepository(User);
+  await repository
+    .createQueryBuilder()
+    .update(User)
+    .set({ default_address : address})
+    .where(`id = ${userId}`)
+    .execute();
+}
+
+export const updateCard = async(userId: number, card?: Card): Promise<void> => {
+  const repository = getRepository(User);
+  await repository
+    .createQueryBuilder()
+    .update(User)
+    .set({ default_card : card})
+    .where(`id = ${userId}`)
+    .execute();
 }

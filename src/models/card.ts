@@ -1,38 +1,30 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToOne, ManyToOne, OneToMany, UpdateDateColumn} from "typeorm";
-import { City } from "./city";
-import { Market } from "./market";
 import { Order } from "./order";
 import { User } from "./user";
 
 @Entity()
-export class Address {
+export class Card {
 
     @PrimaryGeneratedColumn()
     id!: number;
 
     @Column()
-    street!: string;
-
-    @Column()
     number!: string;
 
     @Column()
-    district!: string;
+    name!: string;
 
     @Column()
-    cep!: string;
+    due_date!: string;
 
-    @Column({ nullable: true })
-    complement!: string;
+    @Column()
+    cvv!: string;
 
-    @ManyToOne(_type => City, (city: City) => city.adresses)
-    city!: City
+    @Column()
+    cpf!: string;
 
-    @OneToMany(_type => Order, (order: Order) => order.address)
-    orders!: Array<Order>
-
-    @OneToOne(() => Market, market => market.address)
-    market!: Market;
+    // @OneToMany(_type => Order, (order: Order) => order.address)
+    // orders!: Array<Order>
 
     @ManyToOne(_type => User, (user: User) => user.address, {onDelete:'CASCADE'})
     user!: Array<User>

@@ -54,8 +54,8 @@ __decorate([
     __metadata("design:type", market_1.Market)
 ], Address.prototype, "market", void 0);
 __decorate([
-    typeorm_1.OneToOne(() => user_1.User, user => user.address),
-    __metadata("design:type", market_1.Market)
+    typeorm_1.ManyToOne(_type => user_1.User, (user) => user.address, { onDelete: 'CASCADE' }),
+    __metadata("design:type", Array)
 ], Address.prototype, "user", void 0);
 __decorate([
     typeorm_1.CreateDateColumn(),

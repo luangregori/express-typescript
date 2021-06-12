@@ -7,7 +7,8 @@ import {
     UpdateDateColumn, 
     ManyToOne,
     ManyToMany,
-    JoinTable
+    JoinTable,
+    PrimaryColumn,
  } from "typeorm";
 import { Category } from './category'
 import { Home } from './home'
@@ -29,14 +30,14 @@ export class Product {
     @Column()
     url_photo!: string;
 
-    @Column(({ type: "double precision" }))
-    price!: number;
+    // @Column({ type: "double precision", nullable: true })
+    // price!: number;
 
-    @Column({ type: "double precision", nullable: true })
-    old_price!: number;
+    // @Column({ type: "double precision", nullable: true })
+    // old_price!: number;
 
-    @Column({ nullable: true })
-    discount!: number;
+    // @Column({ nullable: true })
+    // discount!: number;
 
     @ManyToOne(_type => Category, (category: Category) => category.products)
     category!: Array<Category>
@@ -44,9 +45,12 @@ export class Product {
     @OneToMany(_type => Home, (home: Home) => home.product)
     home!: Array<Home>
 
-    @ManyToMany(() => Market, market => market.products)
-    @JoinTable()
-    markets!: Array<Market>;    
+    @OneToMany(() => ProductMarket, (productMarket) => productMarket.product)
+    productMarket!: ProductMarket[];
+
+    // @ManyToMany(() => Market, market => market.products)
+    // @JoinTable()
+    // markets!: Array<Market>;    
 
     @ManyToMany(() => Order, order => order.products)
     @JoinTable()
@@ -57,4 +61,26 @@ export class Product {
 
     @UpdateDateColumn()
     updated_at!: Date;
+}
+
+@Entity()
+export class ProductMarket {
+
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @Column({ type: "double precision" })
+    price!: number;
+
+    @Column({ type: "double precision", nullable: true })
+    old_price!: number;
+
+    @Column({ nullable: true })
+    discount!: number;
+
+    @ManyToOne(() => Product, (product) => product.productMarket)
+    product!: Product;
+
+    @ManyToOne(() => Market, (market) => market.productMarket)
+    market!: Market;
 }

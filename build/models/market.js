@@ -33,9 +33,9 @@ __decorate([
     __metadata("design:type", String)
 ], Market.prototype, "url_photo", void 0);
 __decorate([
-    typeorm_1.ManyToMany(() => product_1.Product, product => product.markets),
+    typeorm_1.OneToMany(() => product_1.ProductMarket, (productMarket) => productMarket.market),
     __metadata("design:type", Array)
-], Market.prototype, "products", void 0);
+], Market.prototype, "productMarket", void 0);
 __decorate([
     typeorm_1.OneToMany(_type => order_1.Order, (order) => order.market),
     __metadata("design:type", Array)

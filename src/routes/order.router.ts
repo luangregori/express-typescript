@@ -10,7 +10,7 @@ router.post("/", async (request: Request, response: Response) => {
       response.send(res);
     })
     .catch(err =>{
-      response.status(400).send(err);
+      response.status(400).json(err);
     })
 });
 

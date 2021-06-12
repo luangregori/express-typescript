@@ -9,28 +9,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAddress = exports.createAddress = exports.getAddressbyUser = exports.getOnlyAddressbyId = void 0;
+exports.deleteCard = exports.createCard = exports.getCardbyUser = exports.getOnlyACardbyId = void 0;
 const typeorm_1 = require("typeorm");
 const models_1 = require("../models");
-exports.getOnlyAddressbyId = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const repository = typeorm_1.getRepository(models_1.Address);
+exports.getOnlyACardbyId = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const repository = typeorm_1.getRepository(models_1.Card);
     return repository.findOneOrFail(id);
 });
-exports.getAddressbyUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const repository = typeorm_1.getRepository(models_1.Address);
-    const address = yield repository
-        .createQueryBuilder("address")
-        .leftJoinAndSelect("address.user", "user")
+exports.getCardbyUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const repository = typeorm_1.getRepository(models_1.Card);
+    const cards = yield repository
+        .createQueryBuilder("card")
+        .leftJoinAndSelect("card.user", "user")
         .where(`user.id = ${userId}`)
         .getMany();
-    return address;
+    return cards;
 });
-exports.createAddress = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const repository = typeorm_1.getRepository(models_1.Address);
-    const address = new models_1.Address();
-    return repository.save(Object.assign(Object.assign({}, address), payload));
+exports.createCard = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const repository = typeorm_1.getRepository(models_1.Card);
+    const card = new models_1.Card();
+    return repository.save(Object.assign(Object.assign({}, card), payload));
 });
-exports.deleteAddress = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const repository = typeorm_1.getRepository(models_1.Address);
+exports.deleteCard = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const repository = typeorm_1.getRepository(models_1.Card);
     return yield repository.delete(id);
 });

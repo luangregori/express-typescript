@@ -44,7 +44,7 @@ let HomeController = class HomeController {
     }
 };
 __decorate([
-    tsoa_1.Get("/:"),
+    tsoa_1.Get("/"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

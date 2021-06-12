@@ -22,7 +22,7 @@ router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, functi
         response.send(res);
     })
         .catch(err => {
-        response.status(400).send(err);
+        response.status(400).json(err);
     });
 }));
 router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {

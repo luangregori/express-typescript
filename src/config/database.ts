@@ -1,7 +1,7 @@
 import { ConnectionOptions } from 'typeorm'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-import { User, Category, Product, Home, Market, Order, State, City, Address } from '../models'
+import { User, Category, Product, Home, Market, Order, State, City, Address, Card, ProductMarket } from '../models'
 
 const config : ConnectionOptions = {
   type: "postgres",
@@ -11,7 +11,7 @@ const config : ConnectionOptions = {
   username: process.env.POSTGRES_USER || "postgres",
   password: process.env.POSTGRES_PASSWORD || "postgresmarketless",
   database: process.env.POSTGRES_DB || "marketless",
-  entities: [User, Category, Product, Home, Market, Order, State, City, Address],
+  entities: [User, Category, Product, Home, Market, Order, State, City, Address, Card, ProductMarket],
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy()
 }

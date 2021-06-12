@@ -13,17 +13,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const category_controller_1 = __importDefault(require("../controllers/category.controller"));
-const auth_1 = __importDefault(require("../middlewares/auth"));
+const card_controller_1 = __importDefault(require("../controllers/card.controller"));
 const router = express_1.default.Router();
-const categoryController = new category_controller_1.default();
-router.use(auth_1.default);
-router.get("/", (_request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield categoryController.getCategories();
-    return response.send(res);
+const cardController = new card_controller_1.default();
+router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return cardController.createCard(request.body)
+        .then(res => {
+        response.send(res);
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
 }));
-router.get("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield categoryController.getProductsInACategory(request.params.id);
-    return response.send(res);
+router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return cardController.getCards(request.body.user)
+        .then(res => {
+        response.send(res);
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
+}));
+router.delete("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return cardController.deleteCard(request.body)
+        .then(res => {
+        response.status(204).send({ 'success': true });
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
 }));
 exports.default = router;

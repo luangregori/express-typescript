@@ -13,15 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const user_controller_1 = __importDefault(require("../controllers/user.controller"));
+const address_controller_1 = __importDefault(require("../controllers/address.controller"));
 const router = express_1.default.Router();
-const userController = new user_controller_1.default();
-router.get("/", (_request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield userController.getUsers();
-    return response.send(res);
+const addressController = new address_controller_1.default();
+router.get("/cities", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return addressController.getAllCities()
+        .then(res => {
+        response.send(res);
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
 }));
 router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    return userController.createUser(request.body)
+    return addressController.createAddress(request.body)
         .then(res => {
         response.send(res);
     })
@@ -29,8 +34,8 @@ router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, functi
         response.status(400).send(err);
     });
 }));
-router.post("/login", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    return userController.login(request.body)
+router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return addressController.getAddress(request.body.user)
         .then(res => {
         response.send(res);
     })
@@ -38,9 +43,13 @@ router.post("/login", (request, response) => __awaiter(void 0, void 0, void 0, f
         response.status(400).send(err);
     });
 }));
-// router.get("/:id", async (request: Request, response: Response) => {
-//   const res = await userController.getUser(request.params.id);
-//   if (!res) response.status(404).send({message: "No user found"})
-//   return response.send(response);
-// });
+router.delete("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return addressController.deleteAddress(request.body)
+        .then(res => {
+        response.status(204).send({ 'success': true });
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
+}));
 exports.default = router;

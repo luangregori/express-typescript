@@ -1,4 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn, OneToOne, JoinColumn} from "typeorm";
+import { Card } from ".";
 import { Address } from "./address";
 import { Order } from "./order";
 
@@ -22,8 +23,18 @@ export class User {
 
     @OneToOne(() => Address, address => address.user)
     @JoinColumn()
-    address!: Address;
+    default_address!: Address;
     
+    @OneToMany(_type => Address, (address: Address) => address.user)
+    address!: Array<Address>
+
+    @OneToOne(() => Card, card => card.user)
+    @JoinColumn()
+    default_card!: Card;
+    
+    @OneToMany(_type => Card, (card: Card) => card.user)
+    card!: Array<Card>
+
     @CreateDateColumn()
     created_at!: Date;
 

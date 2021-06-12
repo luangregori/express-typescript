@@ -42,76 +42,76 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const tsoa_1 = require("tsoa");
 const Yup = __importStar(require("yup"));
+const models_1 = require("../models");
+const card_repository_1 = require("../repositories/card.repository");
 const user_repository_1 = require("../repositories/user.repository");
-const session_repository_1 = require("../repositories/session.repository");
 const httpHelper_1 = require("../helpers/httpHelper");
-let UserController = class UserController {
-    getUsers() {
+let CardController = class CardController {
+    getCards(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            return user_repository_1.getUsers();
+            const allCards = yield card_repository_1.getCardbyUser(user.id);
+            let default_card = user.default_card ? user.default_card.id : 0;
+            allCards.map((el, idx) => {
+                if (el.id === default_card) {
+                    allCards.splice(idx, 1);
+                }
+            });
+            let merged = {
+                default: user.default_card,
+                all: allCards
+            };
+            return merged;
         });
     }
-    createUser(body) {
+    createCard(body) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = Yup.object().shape({
+                number: Yup.string().required(),
                 name: Yup.string().required(),
-                email: Yup.string().email().required(),
-                password: Yup.string().required().min(6),
+                due_date: Yup.string().required(),
+                cvv: Yup.string().required().min(3).max(3),
+                cpf: Yup.string().required(),
             });
             if (!(yield schema.isValid(body))) {
                 return httpHelper_1.badRequestError('Invalid argument');
             }
-            const userExists = yield user_repository_1.getUserbyEmail(body.email);
-            if (userExists) {
-                return httpHelper_1.badRequestError('User already exists');
+            const card = yield card_repository_1.createCard(body);
+            if (body.default) {
+                yield user_repository_1.updateCard(body.user.id, card);
             }
-            return user_repository_1.createUser(body);
+            return card;
         });
     }
-    login(body) {
+    deleteCard(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            const schema = Yup.object().shape({
-                email: Yup.string().email().required(),
-                password: Yup.string().required().min(6),
-            });
-            if (!(yield schema.isValid(body))) {
-                return httpHelper_1.badRequestError('Invalid argument');
+            if (body.user.default_card.id === body.cardId) {
+                yield user_repository_1.updateCard(body.user.id);
             }
-            const userExists = yield user_repository_1.getUserbyEmail(body.email);
-            if (!userExists) {
-                return httpHelper_1.badRequestError('User not found');
-            }
-            const isValidPassword = yield user_repository_1.checkPassword(body.password, userExists.password_hash);
-            if (!isValidPassword) {
-                return httpHelper_1.badRequestError('Password does not match');
-            }
-            const { id, name, email } = userExists;
-            return session_repository_1.getToken({ id, name, email });
+            return card_repository_1.deleteCard(body.cardId);
         });
     }
 };
 __decorate([
-    tsoa_1.Get("/"),
+    tsoa_1.Get("/:id"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [models_1.User]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getUsers", null);
+], CardController.prototype, "getCards", null);
 __decorate([
     tsoa_1.Post("/"),
     __param(0, tsoa_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "createUser", null);
+], CardController.prototype, "createCard", null);
 __decorate([
-    tsoa_1.Post("/login"),
-    __param(0, tsoa_1.Body()),
+    tsoa_1.Delete('/'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "login", null);
-UserController = __decorate([
-    tsoa_1.Route("users"),
-    tsoa_1.Tags("User")
-], UserController);
-exports.default = UserController;
+], CardController.prototype, "deleteCard", null);
+CardController = __decorate([
+    tsoa_1.Route("card"),
+    tsoa_1.Tags("Card")
+], CardController);
+exports.default = CardController;

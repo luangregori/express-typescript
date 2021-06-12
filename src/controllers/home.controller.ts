@@ -5,7 +5,7 @@ import { Home } from '../models'
 @Route("home")
 @Tags("Home")
 export default class HomeController {
-  @Get("/:")
+  @Get("/")
   public async getPromo(): Promise<any> {
     const promos = await getPromos()
     // pesquisa em uma tabela os ids das promos e os mais vendidos

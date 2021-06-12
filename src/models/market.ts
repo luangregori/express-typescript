@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, JoinColumn, ManyToMany, OneToOne, UpdateDateColumn, OneToMany } from "typeorm";
-import { Product } from './product'
+import { Product, ProductMarket } from './product'
 import { Order } from './order'
 import { Address } from "./address";
 
@@ -18,8 +18,11 @@ export class Market {
   @Column({ nullable: true })
   url_photo!: string;
 
-  @ManyToMany(() => Product, product => product.markets)
-  products!: Product[];
+  // @ManyToMany(() => Product, product => product.markets)
+  // products!: Product[];
+
+  @OneToMany(() => ProductMarket, (productMarket) => productMarket.market)
+  productMarket!: ProductMarket[];
 
   @OneToMany(_type => Order, (order: Order) => order.market)
   orders!: Array<Order>
