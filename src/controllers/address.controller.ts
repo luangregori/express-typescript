@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { Address, City, User } from '../models'
 import { createAddress, getAddressbyUser, deleteAddress } from '../repositories/address.repository';
 import { getAllCities, getOnlyCitybyId } from '../repositories/city.repository';
-import { updateAddress } from "../repositories/user.repository";
+// import { updateAddress } from "../repositories/user.repository";
 import { badRequestError } from '../helpers/httpHelper'
 import { IAddressPayload } from "../interface/address.interface";
 
@@ -15,20 +15,20 @@ export default class AddressController {
   public async getAddress(user: User): Promise<any> {
     const allAddress= await getAddressbyUser(user.id)
 
-    let default_address = user.default_address ? user.default_address.id : 0;
+    // let default_address = user.default_address ? user.default_address.id : 0;
 
-    allAddress.map((el, idx) => {
-      if(el.id === default_address){
-        allAddress.splice(idx, 1);
-      }
-    })
+    // allAddress.map((el, idx) => {
+    //   if(el.id === default_address){
+    //     allAddress.splice(idx, 1);
+    //   }
+    // })
 
-    let merged = {
-      default: user.default_address,
-      all: allAddress
-    }
+    // let merged = {
+    //   default: user.default_address,
+    //   all: allAddress
+    // }
 
-    return merged
+    return allAddress
   }
 
   @Get("/cities")
@@ -56,17 +56,17 @@ export default class AddressController {
 
     const address = await createAddress(body)
 
-    if(body.default){
-      await updateAddress(body.user.id, address)
-    }
+    // if(body.default){
+    //   await updateAddress(body.user.id, address)
+    // }
     return address
   }
 
   @Delete('/')
   public async deleteAddress(body: any): Promise<any> {
-    if(body.user.default_address.id === body.addressId){
-      await updateAddress(body.user.id)
-    }
+    // if(body.user.default_address.id === body.addressId){
+    //   await updateAddress(body.user.id)
+    // }
     return deleteAddress(body.addressId)
   }
 }

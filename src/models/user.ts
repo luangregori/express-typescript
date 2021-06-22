@@ -21,16 +21,16 @@ export class User {
     @OneToMany(_type => Order, (order: Order) => order.user)
     orders!: Array<Order>
 
-    @OneToOne(() => Address, address => address.user)
-    @JoinColumn()
-    default_address!: Address;
+    // @OneToOne(() => Address, address => address.user)
+    // @JoinColumn()
+    // default_address!: Address;
     
     @OneToMany(_type => Address, (address: Address) => address.user)
     address!: Array<Address>
 
-    @OneToOne(() => Card, card => card.user)
-    @JoinColumn()
-    default_card!: Card;
+    // @OneToOne(() => Card, card => card.user)
+    // @JoinColumn()
+    // default_card!: Card;
     
     @OneToMany(_type => Card, (card: Card) => card.user)
     card!: Array<Card>
