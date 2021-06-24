@@ -1,6 +1,7 @@
 import { Get, Route, Tags,  Post, Body, Path } from "tsoa";
 import { getPromos } from '../repositories/home.repository'
-import { Home } from '../models'
+import { Home, ProductMarket } from '../models'
+import { getOnlyPriceByMarket } from "../repositories/product.repository";
 
 @Route("home")
 @Tags("Home")
@@ -18,8 +19,8 @@ export default class HomeController {
       return home.filter((value) => {
         return value.type_product === type
       })
-      .map((item) => {
-        return item.product
+      .map((item: any) => {
+        return item
       });
     }
     let promocoes = filterAndMap('P')

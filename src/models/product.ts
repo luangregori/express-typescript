@@ -42,7 +42,7 @@ export class Product {
     @ManyToOne(_type => Category, (category: Category) => category.products)
     category!: Array<Category>
 
-    @OneToMany(_type => Home, (home: Home) => home.product)
+    @OneToMany(_type => Home, (home: Home) => home.product_market)
     home!: Array<Home>
 
     @OneToMany(() => ProductMarket, (productMarket) => productMarket.product)
