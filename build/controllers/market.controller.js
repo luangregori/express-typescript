@@ -19,28 +19,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const tsoa_1 = require("tsoa");
-const home_repository_1 = require("../repositories/home.repository");
-let HomeController = class HomeController {
-    getPromo() {
+const market_repository_1 = require("../repositories/market.repository");
+let MarketController = class MarketController {
+    getMarkets() {
         return __awaiter(this, void 0, void 0, function* () {
-            const promos = yield home_repository_1.getPromos();
-            // pesquisa em uma tabela os ids das promos e os mais vendidos
-            const retun = this.mountResponseBody(promos);
-            return retun;
+            return market_repository_1.getAllMarkets();
         });
-    }
-    mountResponseBody(home) {
-        function filterAndMap(type) {
-            return home.filter((value) => {
-                return value.type_product === type;
-            })
-                .map((item) => {
-                return item;
-            });
-        }
-        let promocoes = filterAndMap('P');
-        let mais_vendidos = filterAndMap('MV');
-        return { promocoes, mais_vendidos };
     }
 };
 __decorate([
@@ -48,9 +32,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], HomeController.prototype, "getPromo", null);
-HomeController = __decorate([
-    tsoa_1.Route("home"),
-    tsoa_1.Tags("Home")
-], HomeController);
-exports.default = HomeController;
+], MarketController.prototype, "getMarkets", null);
+MarketController = __decorate([
+    tsoa_1.Route("market"),
+    tsoa_1.Tags("Market")
+], MarketController);
+exports.default = MarketController;

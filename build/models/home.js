@@ -27,6 +27,10 @@ __decorate([
     __metadata("design:type", Array)
 ], Home.prototype, "product", void 0);
 __decorate([
+    typeorm_1.ManyToOne(_type => product_1.ProductMarket, (product_market) => product_market.id),
+    __metadata("design:type", Array)
+], Home.prototype, "product_market", void 0);
+__decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
 ], Home.prototype, "created_at", void 0);

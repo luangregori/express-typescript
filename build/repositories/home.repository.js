@@ -11,8 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPromos = void 0;
 const typeorm_1 = require("typeorm");
-const models_1 = require("../models");
 exports.getPromos = () => __awaiter(void 0, void 0, void 0, function* () {
-    const repository = typeorm_1.getRepository(models_1.Home);
-    return repository.find({ relations: ['product'] });
+    const entityManager = typeorm_1.getManager();
+    const someQuery = yield entityManager.query(`
+  SELECT p.id as product_id, ho.type_product, p.name, p.description, p.url_photo, pm.price, pm.old_price, pm.discount
+    FROM home ho
+   	JOIN product p ON ho.product_id = p.id
+    JOIN product_market pm ON ho.product_market_id = pm.id;`);
+    return someQuery;
 });

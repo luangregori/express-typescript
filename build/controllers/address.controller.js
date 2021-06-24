@@ -45,23 +45,23 @@ const Yup = __importStar(require("yup"));
 const models_1 = require("../models");
 const address_repository_1 = require("../repositories/address.repository");
 const city_repository_1 = require("../repositories/city.repository");
-const user_repository_1 = require("../repositories/user.repository");
+// import { updateAddress } from "../repositories/user.repository";
 const httpHelper_1 = require("../helpers/httpHelper");
 let AddressController = class AddressController {
     getAddress(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const allAddress = yield address_repository_1.getAddressbyUser(user.id);
-            let default_address = user.default_address ? user.default_address.id : 0;
-            allAddress.map((el, idx) => {
-                if (el.id === default_address) {
-                    allAddress.splice(idx, 1);
-                }
-            });
-            let merged = {
-                default: user.default_address,
-                all: allAddress
-            };
-            return merged;
+            // let default_address = user.default_address ? user.default_address.id : 0;
+            // allAddress.map((el, idx) => {
+            //   if(el.id === default_address){
+            //     allAddress.splice(idx, 1);
+            //   }
+            // })
+            // let merged = {
+            //   default: user.default_address,
+            //   all: allAddress
+            // }
+            return allAddress;
         });
     }
     getAllCities() {
@@ -85,17 +85,17 @@ let AddressController = class AddressController {
             const city = yield city_repository_1.getOnlyCitybyId(body.city_id);
             body.city = city;
             const address = yield address_repository_1.createAddress(body);
-            if (body.default) {
-                yield user_repository_1.updateAddress(body.user.id, address);
-            }
+            // if(body.default){
+            //   await updateAddress(body.user.id, address)
+            // }
             return address;
         });
     }
     deleteAddress(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (body.user.default_address.id === body.addressId) {
-                yield user_repository_1.updateAddress(body.user.id);
-            }
+            // if(body.user.default_address.id === body.addressId){
+            //   await updateAddress(body.user.id)
+            // }
             return address_repository_1.deleteAddress(body.addressId);
         });
     }

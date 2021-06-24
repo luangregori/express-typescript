@@ -37,19 +37,9 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "orders", void 0);
 __decorate([
-    typeorm_1.OneToOne(() => address_1.Address, address => address.user),
-    typeorm_1.JoinColumn(),
-    __metadata("design:type", address_1.Address)
-], User.prototype, "default_address", void 0);
-__decorate([
     typeorm_1.OneToMany(_type => address_1.Address, (address) => address.user),
     __metadata("design:type", Array)
 ], User.prototype, "address", void 0);
-__decorate([
-    typeorm_1.OneToOne(() => _1.Card, card => card.user),
-    typeorm_1.JoinColumn(),
-    __metadata("design:type", _1.Card)
-], User.prototype, "default_card", void 0);
 __decorate([
     typeorm_1.OneToMany(_type => _1.Card, (card) => card.user),
     __metadata("design:type", Array)

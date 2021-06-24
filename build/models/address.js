@@ -42,6 +42,14 @@ __decorate([
     __metadata("design:type", String)
 ], Address.prototype, "complement", void 0);
 __decorate([
+    typeorm_1.Column({ type: "double precision", nullable: true }),
+    __metadata("design:type", Number)
+], Address.prototype, "longitude", void 0);
+__decorate([
+    typeorm_1.Column({ type: "double precision", nullable: true }),
+    __metadata("design:type", Number)
+], Address.prototype, "latitude", void 0);
+__decorate([
     typeorm_1.ManyToOne(_type => city_1.City, (city) => city.adresses),
     __metadata("design:type", city_1.City)
 ], Address.prototype, "city", void 0);

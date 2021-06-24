@@ -11,6 +11,7 @@ const home_router_1 = __importDefault(require("./home.router"));
 const order_router_1 = __importDefault(require("./order.router"));
 const address_router_1 = __importDefault(require("./address.router"));
 const card_router_1 = __importDefault(require("./card.router"));
+const market_router_1 = __importDefault(require("./market.router"));
 const auth_1 = __importDefault(require("../middlewares/auth"));
 const router = express_1.default.Router();
 router.get('/healthcheck', (req, res) => {
@@ -25,4 +26,5 @@ router.use("/order", order_router_1.default);
 router.use("/order", order_router_1.default);
 router.use("/address", address_router_1.default);
 router.use("/card", card_router_1.default);
+router.use("/market", market_router_1.default);
 exports.default = router;

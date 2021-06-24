@@ -38,7 +38,7 @@ __decorate([
     __metadata("design:type", Array)
 ], Product.prototype, "category", void 0);
 __decorate([
-    typeorm_1.OneToMany(_type => home_1.Home, (home) => home.product),
+    typeorm_1.OneToMany(_type => home_1.Home, (home) => home.product_market),
     __metadata("design:type", Array)
 ], Product.prototype, "home", void 0);
 __decorate([

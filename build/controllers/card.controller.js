@@ -44,23 +44,23 @@ const tsoa_1 = require("tsoa");
 const Yup = __importStar(require("yup"));
 const models_1 = require("../models");
 const card_repository_1 = require("../repositories/card.repository");
-const user_repository_1 = require("../repositories/user.repository");
+// import { updateCard } from "../repositories/user.repository";
 const httpHelper_1 = require("../helpers/httpHelper");
 let CardController = class CardController {
     getCards(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const allCards = yield card_repository_1.getCardbyUser(user.id);
-            let default_card = user.default_card ? user.default_card.id : 0;
-            allCards.map((el, idx) => {
-                if (el.id === default_card) {
-                    allCards.splice(idx, 1);
-                }
-            });
-            let merged = {
-                default: user.default_card,
-                all: allCards
-            };
-            return merged;
+            // let default_card = user.default_card ? user.default_card.id : 0;
+            // allCards.map((el, idx) => {
+            //   if(el.id === default_card){
+            //     allCards.splice(idx, 1);
+            //   }
+            // })
+            // let merged = {
+            //   default: user.default_card,
+            //   all: allCards
+            // }
+            return allCards;
         });
     }
     createCard(body) {
@@ -76,17 +76,17 @@ let CardController = class CardController {
                 return httpHelper_1.badRequestError('Invalid argument');
             }
             const card = yield card_repository_1.createCard(body);
-            if (body.default) {
-                yield user_repository_1.updateCard(body.user.id, card);
-            }
+            // if(body.default){
+            //   await updateCard(body.user.id, card)
+            // }
             return card;
         });
     }
     deleteCard(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (body.user.default_card.id === body.cardId) {
-                yield user_repository_1.updateCard(body.user.id);
-            }
+            // if(body.user.default_card.id === body.cardId){
+            //   await updateCard(body.user.id)
+            // }
             return card_repository_1.deleteCard(body.cardId);
         });
     }

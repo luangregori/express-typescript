@@ -8,19 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllMarkets = exports.getOnlyMarketbyId = void 0;
-const typeorm_1 = require("typeorm");
-const models_1 = require("../models");
-exports.getOnlyMarketbyId = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const repository = typeorm_1.getRepository(models_1.Market);
-    return repository.findOneOrFail(id);
-});
-exports.getAllMarkets = () => __awaiter(void 0, void 0, void 0, function* () {
-    const repository = typeorm_1.getRepository(models_1.Market);
-    const market = yield repository
-        .createQueryBuilder("market")
-        .leftJoinAndSelect("market.address", "address")
-        .getMany();
-    return market;
-});
+const express_1 = __importDefault(require("express"));
+const market_controller_1 = __importDefault(require("../controllers/market.controller"));
+// import authMiddleware from '../middlewares/auth';
+const router = express_1.default.Router();
+const marketController = new market_controller_1.default();
+// router.use(authMiddleware);
+router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield marketController.getMarkets();
+    return response.send(res);
+}));
+exports.default = router;
