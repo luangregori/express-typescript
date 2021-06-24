@@ -25,6 +25,12 @@ export class Address {
     @Column({ nullable: true })
     complement!: string;
 
+    @Column({ type: "double precision", nullable: true })
+    longitude!: number;
+
+    @Column({ type: "double precision", nullable: true })
+    latitude!: number;
+
     @ManyToOne(_type => City, (city: City) => city.adresses)
     city!: City
 

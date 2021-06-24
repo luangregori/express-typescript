@@ -6,3 +6,13 @@ export const getOnlyMarketbyId  = async (id: number): Promise<Market> => {
 
   return repository.findOneOrFail(id)
 }
+
+export const getAllMarkets  = async () :Promise<Array<Market>> => {
+  const repository = getRepository(Market);
+
+  const market = await repository
+  .createQueryBuilder("market")
+  .leftJoinAndSelect("market.address", "address")
+  .getMany();
+return market
+}

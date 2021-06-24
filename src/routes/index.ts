@@ -6,6 +6,7 @@ import HomeRouter from "./home.router";
 import OrderRouter from "./order.router";
 import AddressRouter from "./address.router";
 import CardRouter from "./card.router";
+import MarketRouter from "./market.router";
 
 import authMiddleware from '../middlewares/auth';
 
@@ -26,5 +27,6 @@ router.use("/order", OrderRouter)
 router.use("/order", OrderRouter)
 router.use("/address", AddressRouter)
 router.use("/card", CardRouter)
+router.use("/market", MarketRouter)
 
 export default router;
