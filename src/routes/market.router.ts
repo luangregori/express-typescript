@@ -12,4 +12,10 @@ router.get("/", async (request: Request, response: Response) => {
   return response.send(res);
 });
 
+router.get("/:id", async (request: Request, response: Response) => {
+  const res = await marketController.getProductsInAMarket(request.params.id);
+  return response.send(res);
+});
+
+
 export default router
