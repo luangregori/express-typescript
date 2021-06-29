@@ -26,6 +26,11 @@ let MarketController = class MarketController {
             return market_repository_1.getAllMarkets();
         });
     }
+    getProductsInAMarket(marketId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return market_repository_1.getProductsInAMarket(Number(marketId));
+        });
+    }
 };
 __decorate([
     tsoa_1.Get("/"),
@@ -33,6 +38,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], MarketController.prototype, "getMarkets", null);
+__decorate([
+    tsoa_1.Get("/:id"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MarketController.prototype, "getProductsInAMarket", null);
 MarketController = __decorate([
     tsoa_1.Route("market"),
     tsoa_1.Tags("Market")

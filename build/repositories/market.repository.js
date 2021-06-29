@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllMarkets = exports.getOnlyMarketbyId = void 0;
+exports.getProductsInAMarket = exports.getAllMarkets = exports.getOnlyMarketbyId = void 0;
 const typeorm_1 = require("typeorm");
 const models_1 = require("../models");
 exports.getOnlyMarketbyId = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -23,4 +23,13 @@ exports.getAllMarkets = () => __awaiter(void 0, void 0, void 0, function* () {
         .leftJoinAndSelect("market.address", "address")
         .getMany();
     return market;
+});
+exports.getProductsInAMarket = (marketId) => __awaiter(void 0, void 0, void 0, function* () {
+    const entityManager = typeorm_1.getManager();
+    const someQuery = yield entityManager.query(`
+    SELECT p.id as id, p.name, p.description, p.url_photo, pm.price, pm.old_price, pm.discount
+      FROM product_market pm
+      JOIN product p ON pm.product_id = p.id
+      WHERE pm.market_id = ${marketId};`);
+    return someQuery;
 });

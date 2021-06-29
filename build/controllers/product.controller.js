@@ -34,6 +34,11 @@ let ProductController = class ProductController {
             return httpHelper_1.badRequestError('invalid product');
         });
     }
+    filterProducts(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return product_repository_1.filterProducts(body.filter);
+        });
+    }
 };
 __decorate([
     tsoa_1.Get("/:id"),
@@ -42,6 +47,12 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "getProduct", null);
+__decorate([
+    tsoa_1.Post("/"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "filterProducts", null);
 ProductController = __decorate([
     tsoa_1.Route("product"),
     tsoa_1.Tags("Products")

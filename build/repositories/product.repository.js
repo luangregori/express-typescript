@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductsInACategory = exports.getOnlyPriceByMarket = exports.getOnlyProductbyId = exports.getProduct = void 0;
+exports.filterProducts = exports.getProductsInACategory = exports.getOnlyPriceByMarket = exports.getOnlyProductbyId = exports.getProduct = void 0;
 const typeorm_1 = require("typeorm");
 const models_1 = require("../models");
 exports.getProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -60,5 +60,14 @@ exports.getProductsInACategory = (id) => __awaiter(void 0, void 0, void 0, funct
     JOIN product_market pm ON pm.product_id = t.product_id AND t.price = pm.price
     JOIN product p ON pm.product_id = p.id
     WHERE p.category_id = ${id};`);
+    return someQuery;
+});
+exports.filterProducts = (filter) => __awaiter(void 0, void 0, void 0, function* () {
+    const entityManager = typeorm_1.getManager();
+    const someQuery = yield entityManager.query(`
+  SELECT p.id as id, p.name, p.description, p.url_photo, pm.price, pm.old_price, pm.discount
+		FROM product_market pm
+    JOIN product p ON pm.product_id = p.id
+    WHERE p.name LIKE '%${filter}%';`);
     return someQuery;
 });

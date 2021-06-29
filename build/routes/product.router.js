@@ -27,4 +27,13 @@ router.get("/:id", (request, response) => __awaiter(void 0, void 0, void 0, func
         response.status(400).send(err);
     });
 }));
+router.post("/filter", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    return productController.filterProducts(request.body)
+        .then(res => {
+        response.send(res);
+    })
+        .catch(err => {
+        response.status(400).send(err);
+    });
+}));
 exports.default = router;

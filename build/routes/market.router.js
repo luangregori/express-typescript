@@ -22,4 +22,8 @@ router.get("/", (request, response) => __awaiter(void 0, void 0, void 0, functio
     const res = yield marketController.getMarkets();
     return response.send(res);
 }));
+router.get("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield marketController.getProductsInAMarket(request.params.id);
+    return response.send(res);
+}));
 exports.default = router;
