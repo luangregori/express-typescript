@@ -66,6 +66,6 @@ export const filterProducts  = async (filter: string): Promise<Array<any>> => {
   SELECT p.id as id, p.name, p.description, p.url_photo, pm.price, pm.old_price, pm.discount
 		FROM product_market pm
     JOIN product p ON pm.product_id = p.id
-    WHERE p.name LIKE '%${filter}%';`);
+    WHERE p.name ILIKE '%${filter}%';`);
   return someQuery
 }
