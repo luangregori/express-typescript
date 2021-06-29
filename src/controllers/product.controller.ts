@@ -1,5 +1,5 @@
 import { Get, Route, Tags,  Post, Body, Path } from "tsoa";
-import { getProduct } from '../repositories/product.repository'
+import { filterProducts, getProduct } from '../repositories/product.repository'
 import { badRequestError } from '../helpers/httpHelper'
 import { Product } from '../models'
 
@@ -13,5 +13,10 @@ export default class ProductController {
       return products
     }
     return badRequestError('invalid product')
+  }
+
+  @Post("/")
+  public async filterProducts(body: any): Promise<any> {
+    return filterProducts(body.filter)
   }
 }

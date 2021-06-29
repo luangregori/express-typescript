@@ -17,4 +17,14 @@ router.get("/:id", async (request: Request, response: Response) => {
     })
 });
 
+router.post("/filter", async (request: Request, response: Response) => {
+  return productController.filterProducts(request.body)
+    .then(res =>{
+      response.send(res);
+    })
+    .catch(err =>{
+      response.status(400).send(err);
+    })
+});
+
 export default router

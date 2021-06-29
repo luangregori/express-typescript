@@ -59,3 +59,13 @@ export const getProductsInACategory  = async (id: number): Promise<Array<any>> =
     WHERE p.category_id = ${id};`);
   return someQuery
 }
+
+export const filterProducts  = async (filter: string): Promise<Array<any>> => {
+  const entityManager = getManager();
+  const someQuery = await entityManager.query(`
+  SELECT p.id as id, p.name, p.description, p.url_photo, pm.price, pm.old_price, pm.discount
+		FROM product_market pm
+    JOIN product p ON pm.product_id = p.id
+    WHERE p.name LIKE '%${filter}%';`);
+  return someQuery
+}
